@@ -49,7 +49,7 @@ class BookRequest extends FormRequest
             if (strlen($isbn) === 10) {
                 if (!preg_match('/^\d{9}[\dX]$/', $isbn)) {
                     return false;
-                }'required|unique:books|isbn'
+                }
                 $check = 0;
                 for ($i = 0; $i < 9; $i++) {
                     $check += (10 - $i) * intval($isbn[$i]);

@@ -36,6 +36,8 @@
         </div>
         <!--academic year drop down-->
         <div class="flex items-center">
+            <!-- Language Switcher -->
+            @include('components.language-switcher')
             <notification url="{{url('/')}}" mode="admin"></notification>
             <div class="navbar-menu">
                 <ul class="navbar-nav ml-auto flex items-center">
