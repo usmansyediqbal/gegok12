@@ -49,5 +49,5 @@ Route::post('/{slug}/admission-form/validationAcademicDetail', 'AdmissionControl
 Route::post('/{slug}/admission-form/validationParentDetail', 'AdmissionController@validationParentDetail');
 Route::post('/{slug}/admission-form/validationPersonalDetail', 'AdmissionController@validationPersonalDetail');
 
-// Language switcher
-Route::post('/language/switch', 'LanguageController@switch')->name('language.switch');
+// Language switcher (within web middleware for proper session handling)
+Route::post('/language/switch', 'LanguageController@switch')->name('language.switch')->middleware('web');

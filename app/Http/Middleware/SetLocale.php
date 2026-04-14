@@ -11,20 +11,31 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next)
     {
-        // Check if user is authenticated
-        if (auth()->check()) {
-            // Use user's preferred language from database
-            $locale = auth()->user()->language ?? 'en';
-        } elseif (Session::has('locale')) {
-            // Use session locale for guests
-            $locale = Session::get('locale');
-        } else {
-            // Default to English
-            $locale = 'en';
-        }
+        try {
+            // Check if user is authenticated
+            if (auth()->check() && auth()->user()) {
+                // Use user's preferred language from database
+                $locale = auth()->user()->language ?? 'en';
+            } elseif (Session::has('locale')) {
+                // Use session locale for guests
+                $locale = Session::get('locale');
+            } else {
+                // Default to English
+                $locale = 'en';
+            }
 
-        // Set the application locale
-        App::setLocale($locale);
+            // Validate locale
+            $availableLocales = config('app.available_locales', ['en', 'fr']);
+            if (! in_array($locale, $availableLocales)) {
+                $locale = 'en';
+            }
+
+            // Set the application locale
+            App::setLocale($locale);
+        } catch (\Exception $e) {
+            // Fallback to English if any error
+            App::setLocale('en');
+        }
 
         return $next($request);
     }
